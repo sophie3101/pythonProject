@@ -6,7 +6,7 @@ import sys
 import os
 from collections import deque
 from url_dict import Url_Dict
-
+from miscelleneous import fileToList, listToFile
 class Crawler:
   def __init__(self, url, level = 2, log_file = 'logging.log'):
     self.url = url 
@@ -38,15 +38,23 @@ class Crawler:
     # get all link on the page
     links = set(link.get('href') for link in soup.find_all('a') if link not in self.seen)
     print('Number of links found in this page', len(links))
-    print(links)
+    # print(links)
     url_collections = Url_Dict(self.domain)
 
     # add the main website if the list links does not contain
     if web_link not in links: links.add(web_link)
     url_collections.parse_list(links)
-    # print(url_collections.url_dict)
+    print(url_collections.url_dict)
+    listToFile(links)
+  # def parse_from_file(self):
+  #   links = fileToList()
+  #   # print(links)
+  #   url_collections = Url_Dict(self.domain)
+  #   url_collections.parse_list(links)
+  #   print(url_collections.url_dict)
    
 url = "https://github.com/" #"https://immatics.com/"#
 crawler = Crawler(url)
 crawler.parse_recursive()
+# crawler.parse_from_file()
 
